@@ -1,4 +1,4 @@
-FROM opendronemap/odm:gpu
+FROM chwy907/odm:gpu
 MAINTAINER Piero Toffanin <pt@masseranolabs.com>
 
 EXPOSE 3000
