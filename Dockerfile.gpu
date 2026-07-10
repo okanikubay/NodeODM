@@ -8,6 +8,10 @@ USER root
 ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION 14
 
+RUN mkdir /var/www
+WORKDIR "/var/www"
+COPY . /var/www
+
 RUN bash install_deps.sh && \
     ln -s /code/SuperBuild/install/bin/untwine /usr/bin/untwine && \
     ln -s /code/SuperBuild/install/bin/entwine /usr/bin/entwine && \
@@ -16,11 +20,8 @@ RUN bash install_deps.sh && \
 
 RUN echo /usr/local/cuda-11.2/compat >> /etc/ld.so.conf.d/989_cuda-11.conf && ldconfig
 
-RUN mkdir /var/www
-
-WORKDIR "/var/www"
 RUN useradd -m -d "/home/odm" -s /bin/bash odm
-COPY --chown=odm:odm . /var/www
+RUN chown -R odm:odm /var/www
 
 RUN npm install --production && mkdir -p tmp && node index.js --powercycle
 
