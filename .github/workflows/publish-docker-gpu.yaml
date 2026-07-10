@@ -27,14 +27,17 @@ jobs:
     - name: Login to dockerHub
       uses: docker/login-action@v1
       with:
-        username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        # username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        # password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        registry: harbor.gstar-info.com
+        username: ${{ secrets.HARBOR_USERNAME }}
+        password: ${{ secrets.HARBOR_PASSWORD }}
     # Use the repository information of the checked-out code to format docker tags
     - name: Docker meta
       id: docker_meta
       uses: crazy-max/ghaction-docker-meta@v1
       with:
-        images: chwy907/nodeodm
+        images: harbor.gstar-info.com/library/nodeodm
         tag-semver: |
           {{version}}
     - name: Build and push Docker image
@@ -45,5 +48,5 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          chwy907/nodeodm:gpu-${{ env.BUILD_TIME }}
-          chwy907/nodeodm:gpu
+          harbor.gstar-info.com/library/nodeodm:gpu-${{ env.BUILD_TIME }}
+          harbor.gstar-info.com/library/nodeodm:gpu
