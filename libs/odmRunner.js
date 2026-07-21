@@ -25,10 +25,21 @@ let config = require('../config.js');
 let logger = require('./logger');
 let utils = require('./utils');
 
-const shQuote = s =>  {
-    s = s.replace(/"/g, "")
+const shQuote = s => {
+    // 如果传入的不是 string 类型，打印警告和堆栈日志以精确定位调用源头
+    if (typeof s !== 'string') {
+        console.error(`[shQuote Error] Received non-string parameter:`, {
+            value: s,
+            type: typeof s,
+            trace: new Error().stack
+        });
+        // 强制转为字符串，防止 .replace() 抛出 TypeError
+        s = String(s ?? '');
+    }
+
+    s = s.replace(/"/g, "");
     return `"${s}"`;
-}
+};
 
 module.exports = {
     run: function(options, projectName, done, outputReceived){
