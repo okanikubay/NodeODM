@@ -20,6 +20,9 @@ RUN bash install_deps.sh && \
 
 RUN echo /usr/local/cuda-11.2/compat >> /etc/ld.so.conf.d/989_cuda-11.conf && ldconfig
 
+# 修补 exifread 库的越界崩溃 Bug
+RUN sed -i 's/printable = str(values\[0\])/printable = str(values[0]) if values else ""/' /code/venv/lib/python3.12/site-packages/exifread/core/exif_header.py
+
 RUN useradd -m -d "/home/odm" -s /bin/bash odm
 RUN chown -R odm:odm /var/www
 
